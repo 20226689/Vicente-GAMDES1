@@ -1,0 +1,56 @@
+[gd_scene load_steps=6 format=3 uid="uid://ks6qmgw1cuhy"]
+
+[ext_resource type="Texture2D" uid="uid://dki3i1fmv8oln" path="res://assets/Effect assets/567.png" id="1_pwms2"]
+[ext_resource type="Script" uid="uid://cmi7gyisfddo" path="res://enemy_explode_sprite.gd" id="2_kpeyp"]
+
+[sub_resource type="Animation" id="Animation_kpeyp"]
+resource_name = "explode"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.0333333, 0.0666667, 0.1, 0.133333, 0.166667, 0.2, 0.233333, 0.266667, 0.3, 0.333333, 0.366667),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+}
+
+[sub_resource type="Animation" id="Animation_keg8y"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_2wvfe"]
+_data = {
+&"RESET": SubResource("Animation_keg8y"),
+&"explode": SubResource("Animation_kpeyp")
+}
+
+[node name="EnemyExplode" type="Node2D"]
+
+[node name="EnemyExplodeSprite" type="Sprite2D" parent="."]
+scale = Vector2(3, 3)
+texture = ExtResource("1_pwms2")
+hframes = 13
+region_enabled = true
+region_rect = Rect2(0, 0, 832, 64)
+script = ExtResource("2_kpeyp")
+
+[node name="EnemyExplodeSpriteAnimation" type="AnimationPlayer" parent="EnemyExplodeSprite"]
+libraries = {
+&"": SubResource("AnimationLibrary_2wvfe")
+}

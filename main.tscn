@@ -1,0 +1,146 @@
+[gd_scene load_steps=18 format=3 uid="uid://ctqoj711sl11a"]
+
+[ext_resource type="Script" uid="uid://bu3xim7at0hml" path="res://player.gd" id="1_h2yge"]
+[ext_resource type="Texture2D" uid="uid://7sobphqdbnre" path="res://assets/background/Nebula Red.png" id="1_ig7tw"]
+[ext_resource type="Script" uid="uid://cxhxdd7rsl8fy" path="res://main.gd" id="1_lquwl"]
+[ext_resource type="Texture2D" uid="uid://bgbj8nueeea8x" path="res://assets/Ship Sprites/ship1.png" id="3_1bvp3"]
+[ext_resource type="PackedScene" uid="uid://defu4uuc4usj" path="res://laser.tscn" id="4_1bvp3"]
+[ext_resource type="Texture2D" uid="uid://bq4bqsrm5a8qu" path="res://assets/Animated Fire Sprites/Red Effect Bullet Impact Explosion 32x32.png" id="5_4c57u"]
+[ext_resource type="Script" uid="uid://cmcgue8cm6rrv" path="res://label_score.gd" id="6_5vw27"]
+[ext_resource type="Script" uid="uid://375xmd54x7ey" path="res://enemy_spawner.gd" id="6_7mycd"]
+[ext_resource type="Script" uid="uid://diwx3mvuvakp" path="res://thruster.gd" id="6_efxa6"]
+[ext_resource type="PackedScene" uid="uid://c8dsuqrvhqlen" path="res://enemy.tscn" id="7_272bh"]
+[ext_resource type="Script" uid="uid://blq66cx5yj7i7" path="res://label_end.gd" id="7_kek77"]
+
+[sub_resource type="Animation" id="Animation_efxa6"]
+resource_name = "thruster_idle"
+length = 0.11
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Thruster:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.0333333, 0.0666667, 0.1),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3]
+}
+
+[sub_resource type="Animation" id="Animation_dg77c"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Thruster:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ycdy4"]
+_data = {
+&"RESET": SubResource("Animation_dg77c"),
+&"thruster_idle": SubResource("Animation_efxa6")
+}
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_lquwl"]
+radius = 33.0
+
+[sub_resource type="LabelSettings" id="LabelSettings_h2yge"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_1bvp3"]
+font_size = 50
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_lquwl")
+
+[node name="Player" type="Area2D" parent="."]
+position = Vector2(576, 544)
+script = ExtResource("1_h2yge")
+laser_tcsn = ExtResource("4_1bvp3")
+
+[node name="PlayerBody" type="Sprite2D" parent="Player"]
+z_index = 5
+texture_filter = 1
+position = Vector2(-3.8147e-06, 1.90735e-06)
+scale = Vector2(0.101791, 0.0997608)
+texture = ExtResource("3_1bvp3")
+
+[node name="Thruster" type="Sprite2D" parent="Player/PlayerBody"]
+z_index = -1
+position = Vector2(0, 400)
+rotation = -1.5708
+scale = Vector2(11, 11)
+texture = ExtResource("5_4c57u")
+hframes = 4
+region_enabled = true
+region_rect = Rect2(512, 0, 128, 32)
+script = ExtResource("6_efxa6")
+
+[node name="ThrusterAnimation" type="AnimationPlayer" parent="Player/PlayerBody/Thruster"]
+root_node = NodePath("../..")
+libraries = {
+&"": SubResource("AnimationLibrary_ycdy4")
+}
+speed_scale = 0.8
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
+z_index = 5
+shape = SubResource("CircleShape2D_lquwl")
+
+[node name="Background" type="Sprite2D" parent="."]
+texture_filter = 1
+position = Vector2(576, 324)
+scale = Vector2(0.28125, 0.158203)
+texture = ExtResource("1_ig7tw")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="LabelScore" type="Label" parent="Control"]
+z_index = 10
+layout_mode = 0
+offset_left = 512.0
+offset_top = 16.0
+offset_right = 640.0
+offset_bottom = 47.0
+text = "Score: 0"
+label_settings = SubResource("LabelSettings_h2yge")
+horizontal_alignment = 1
+vertical_alignment = 1
+script = ExtResource("6_5vw27")
+
+[node name="LabelEnd" type="Label" parent="Control"]
+visible = false
+z_index = 10
+layout_mode = 0
+offset_left = 320.0
+offset_top = 232.0
+offset_right = 832.0
+offset_bottom = 408.0
+text = "Game Over
+(Press space to retry)"
+label_settings = SubResource("LabelSettings_1bvp3")
+horizontal_alignment = 1
+vertical_alignment = 1
+script = ExtResource("7_kek77")
+
+[node name="EnemySpawner" type="Node2D" parent="."]
+script = ExtResource("6_7mycd")
+enemy_tscn = ExtResource("7_272bh")
+
+[node name="Timer" type="Timer" parent="EnemySpawner"]
+autostart = true
+
+[connection signal="area_entered" from="Player" to="Player" method="_on_area_entered"]
+[connection signal="timeout" from="EnemySpawner/Timer" to="EnemySpawner" method="_on_timer_timeout"]
