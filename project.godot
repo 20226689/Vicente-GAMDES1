@@ -10,10 +10,9 @@ config_version=5
 
 [application]
 
-config/name="Demo"
+config/name="Space War v1.1"
 run/main_scene="uid://ctqoj711sl11a"
 config/features=PackedStringArray("4.4", "Forward Plus")
-config/icon="res://icon.svg"
 
 [display]
 

@@ -1,31 +1,19 @@
-[gd_scene load_steps=18 format=3 uid="uid://ctqoj711sl11a"]
+[gd_scene load_steps=24 format=3 uid="uid://ctqoj711sl11a"]
 
-[ext_resource type="Script" uid="uid://bu3xim7at0hml" path="res://player.gd" id="1_h2yge"]
-[ext_resource type="Texture2D" uid="uid://7sobphqdbnre" path="res://assets/background/Nebula Red.png" id="1_ig7tw"]
+[ext_resource type="Script" uid="uid://bu3xim7at0hml" path="res://Scripts/player.gd" id="1_h2yge"]
 [ext_resource type="Script" uid="uid://cxhxdd7rsl8fy" path="res://main.gd" id="1_lquwl"]
-[ext_resource type="Texture2D" uid="uid://bgbj8nueeea8x" path="res://assets/Ship Sprites/ship1.png" id="3_1bvp3"]
-[ext_resource type="PackedScene" uid="uid://defu4uuc4usj" path="res://laser.tscn" id="4_1bvp3"]
-[ext_resource type="Texture2D" uid="uid://bq4bqsrm5a8qu" path="res://assets/Animated Fire Sprites/Red Effect Bullet Impact Explosion 32x32.png" id="5_4c57u"]
-[ext_resource type="Script" uid="uid://cmcgue8cm6rrv" path="res://label_score.gd" id="6_5vw27"]
-[ext_resource type="Script" uid="uid://375xmd54x7ey" path="res://enemy_spawner.gd" id="6_7mycd"]
-[ext_resource type="PackedScene" uid="uid://c8dsuqrvhqlen" path="res://enemy.tscn" id="7_272bh"]
-[ext_resource type="Script" uid="uid://blq66cx5yj7i7" path="res://label_end.gd" id="7_kek77"]
-
-[sub_resource type="Animation" id="Animation_w48qg"]
-resource_name = "ThrusterRight"
-loop_mode = 1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("ThrusterRight:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.233333, 0.466667, 0.7),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 1,
-"values": [0, 1, 2, 3]
-}
+[ext_resource type="Texture2D" uid="uid://bgbj8nueeea8x" path="res://Assets/Ship Sprites/ship1.png" id="3_1bvp3"]
+[ext_resource type="PackedScene" uid="uid://defu4uuc4usj" path="res://Scenes/laser.tscn" id="4_1bvp3"]
+[ext_resource type="Texture2D" uid="uid://bq4bqsrm5a8qu" path="res://Assets/Animated Fire Sprites/Red Effect Bullet Impact Explosion 32x32.png" id="5_4c57u"]
+[ext_resource type="Script" uid="uid://cmcgue8cm6rrv" path="res://Scripts/label_score.gd" id="6_5vw27"]
+[ext_resource type="Script" uid="uid://375xmd54x7ey" path="res://Scripts/enemy_spawner.gd" id="6_7mycd"]
+[ext_resource type="PackedScene" uid="uid://c8dsuqrvhqlen" path="res://Scenes/enemy.tscn" id="7_272bh"]
+[ext_resource type="Script" uid="uid://blq66cx5yj7i7" path="res://Scripts/label_end.gd" id="7_kek77"]
+[ext_resource type="Script" uid="uid://du5stlpjg8g0v" path="res://Scripts/planet_big_spawner.gd" id="10_w48qg"]
+[ext_resource type="Texture2D" uid="uid://b4frpyrr0ha3n" path="res://Assets/Parallax Background/blue-back.png" id="11_efxa6"]
+[ext_resource type="Shader" uid="uid://e1memdddgcix" path="res://Shaders/space.gdshader" id="11_w48qg"]
+[ext_resource type="Texture2D" uid="uid://bheplnabpxurn" path="res://Assets/Parallax Background/blue-stars.png" id="12_dg77c"]
+[ext_resource type="Shader" uid="uid://4puc1tmenj5g" path="res://Shaders/main.gdshader" id="13_ycdy4"]
 
 [sub_resource type="Animation" id="Animation_vivmo"]
 length = 0.001
@@ -70,6 +58,22 @@ tracks/0/keys = {
 "values": [0, 1, 2, 3]
 }
 
+[sub_resource type="Animation" id="Animation_w48qg"]
+resource_name = "ThrusterRight"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ThrusterRight:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.233333, 0.466667, 0.7),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_ycdy4"]
 _data = {
 &"RESET": SubResource("Animation_vivmo"),
@@ -84,6 +88,14 @@ radius = 33.0
 
 [sub_resource type="LabelSettings" id="LabelSettings_1bvp3"]
 font_size = 50
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_vivmo"]
+shader = ExtResource("11_w48qg")
+shader_parameter/SPEED = 0.05
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_w48qg"]
+shader = ExtResource("13_ycdy4")
+shader_parameter/SPEED = 0.1
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_lquwl")
@@ -138,12 +150,6 @@ speed_scale = 4.0
 z_index = 5
 shape = SubResource("CircleShape2D_lquwl")
 
-[node name="Background" type="Sprite2D" parent="."]
-texture_filter = 1
-position = Vector2(576, 324)
-scale = Vector2(0.28125, 0.158203)
-texture = ExtResource("1_ig7tw")
-
 [node name="Control" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 0
@@ -154,9 +160,9 @@ offset_bottom = 40.0
 z_index = 10
 layout_mode = 0
 offset_left = 512.0
-offset_top = 16.0
+offset_top = 24.0
 offset_right = 640.0
-offset_bottom = 47.0
+offset_bottom = 55.0
 text = "Score: 0"
 label_settings = SubResource("LabelSettings_h2yge")
 horizontal_alignment = 1
@@ -168,9 +174,9 @@ visible = false
 z_index = 10
 layout_mode = 0
 offset_left = 320.0
-offset_top = 232.0
+offset_top = 208.0
 offset_right = 832.0
-offset_bottom = 408.0
+offset_bottom = 384.0
 text = "Game Over
 (Press space to retry)"
 label_settings = SubResource("LabelSettings_1bvp3")
@@ -183,7 +189,38 @@ script = ExtResource("6_7mycd")
 enemy_tscn = ExtResource("7_272bh")
 
 [node name="Timer" type="Timer" parent="EnemySpawner"]
+wait_time = 0.5
 autostart = true
+
+[node name="Planet Big Spawner" type="Node2D" parent="."]
+script = ExtResource("10_w48qg")
+
+[node name="Timer" type="Timer" parent="Planet Big Spawner"]
+wait_time = 0.5
+
+[node name="Space" type="TextureRect" parent="."]
+z_index = -10
+texture_repeat = 2
+material = SubResource("ShaderMaterial_vivmo")
+offset_left = -64.0
+offset_top = -64.0
+offset_right = 1216.0
+offset_bottom = 704.0
+texture = ExtResource("11_efxa6")
+
+[node name="Stars" type="TextureRect" parent="."]
+texture_repeat = 2
+material = SubResource("ShaderMaterial_w48qg")
+offset_left = -64.0
+offset_top = -64.0
+offset_right = 1216.0
+offset_bottom = 704.0
+texture = ExtResource("12_dg77c")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
 
 [connection signal="area_entered" from="Player" to="Player" method="_on_area_entered"]
 [connection signal="timeout" from="EnemySpawner/Timer" to="EnemySpawner" method="_on_timer_timeout"]
+[connection signal="timeout" from="Planet Big Spawner/Timer" to="Planet Big Spawner" method="_on_timer_timeout"]
