@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://btyri82yo2afk"]
+
+[ext_resource type="Texture2D" uid="uid://ckp3442pcbijj" path="res://Assets/Parallax Background/prop-planet-big.png" id="1_gdax2"]
+
+[node name="Planet Big" type="Node2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+z_index = 5
+scale = Vector2(5, 5)
+texture = ExtResource("1_gdax2")
