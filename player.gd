@@ -5,6 +5,10 @@ extends Area2D
 
 @onready var mainScene = $".."
 
+func _ready():
+	$PlayerBody/ThrusterRight/Right.play("ThrusterLeft")
+	$PlayerBody/ThrustersLeft/Left.play("ThrusterRight")
+	
 func _process(delta):
 	var velocity = Vector2.ZERO
 

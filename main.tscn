@@ -8,33 +8,31 @@
 [ext_resource type="Texture2D" uid="uid://bq4bqsrm5a8qu" path="res://assets/Animated Fire Sprites/Red Effect Bullet Impact Explosion 32x32.png" id="5_4c57u"]
 [ext_resource type="Script" uid="uid://cmcgue8cm6rrv" path="res://label_score.gd" id="6_5vw27"]
 [ext_resource type="Script" uid="uid://375xmd54x7ey" path="res://enemy_spawner.gd" id="6_7mycd"]
-[ext_resource type="Script" uid="uid://diwx3mvuvakp" path="res://thruster.gd" id="6_efxa6"]
 [ext_resource type="PackedScene" uid="uid://c8dsuqrvhqlen" path="res://enemy.tscn" id="7_272bh"]
 [ext_resource type="Script" uid="uid://blq66cx5yj7i7" path="res://label_end.gd" id="7_kek77"]
 
-[sub_resource type="Animation" id="Animation_efxa6"]
-resource_name = "thruster_idle"
-length = 0.11
+[sub_resource type="Animation" id="Animation_w48qg"]
+resource_name = "ThrusterRight"
 loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Thruster:frame")
+tracks/0/path = NodePath("ThrusterRight:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.0333333, 0.0666667, 0.1),
+"times": PackedFloat32Array(0, 0.233333, 0.466667, 0.7),
 "transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 1,
 "values": [0, 1, 2, 3]
 }
 
-[sub_resource type="Animation" id="Animation_dg77c"]
+[sub_resource type="Animation" id="Animation_vivmo"]
 length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Thruster:frame")
+tracks/0/path = NodePath("ThrusterRight:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -43,11 +41,40 @@ tracks/0/keys = {
 "update": 1,
 "values": [0]
 }
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("ThrustersLeft:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_ycdy4"]
+resource_name = "ThrusterLeft"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ThrustersLeft:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.233333, 0.466667, 0.7),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_ycdy4"]
 _data = {
-&"RESET": SubResource("Animation_dg77c"),
-&"thruster_idle": SubResource("Animation_efxa6")
+&"RESET": SubResource("Animation_vivmo"),
+&"ThrusterLeft": SubResource("Animation_ycdy4"),
+&"ThrusterRight": SubResource("Animation_w48qg")
 }
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_lquwl"]
@@ -73,25 +100,41 @@ position = Vector2(-3.8147e-06, 1.90735e-06)
 scale = Vector2(0.101791, 0.0997608)
 texture = ExtResource("3_1bvp3")
 
-[node name="Thruster" type="Sprite2D" parent="Player/PlayerBody"]
-z_index = -1
-position = Vector2(0, 400)
-rotation = -1.5708
-scale = Vector2(11, 11)
+[node name="ThrustersLeft" type="Sprite2D" parent="Player/PlayerBody"]
+z_index = 1
+position = Vector2(-167.009, 230.551)
+rotation = 1.5708
+scale = Vector2(10, 10)
 texture = ExtResource("5_4c57u")
 hframes = 4
 region_enabled = true
-region_rect = Rect2(512, 0, 128, 32)
-script = ExtResource("6_efxa6")
+region_rect = Rect2(352, 160, 128, 32)
 
-[node name="ThrusterAnimation" type="AnimationPlayer" parent="Player/PlayerBody/Thruster"]
+[node name="Left" type="AnimationPlayer" parent="Player/PlayerBody/ThrustersLeft"]
 root_node = NodePath("../..")
 libraries = {
 &"": SubResource("AnimationLibrary_ycdy4")
 }
-speed_scale = 0.8
+speed_scale = 4.0
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
+[node name="ThrusterRight" type="Sprite2D" parent="Player/PlayerBody"]
+z_index = 1
+position = Vector2(176.833, 230.551)
+rotation = 1.5708
+scale = Vector2(10, 10)
+texture = ExtResource("5_4c57u")
+hframes = 4
+region_enabled = true
+region_rect = Rect2(352, 160, 128, 32)
+
+[node name="Right" type="AnimationPlayer" parent="Player/PlayerBody/ThrusterRight"]
+root_node = NodePath("../..")
+libraries = {
+&"": SubResource("AnimationLibrary_ycdy4")
+}
+speed_scale = 4.0
+
+[node name="PlayerCollision" type="CollisionShape2D" parent="Player"]
 z_index = 5
 shape = SubResource("CircleShape2D_lquwl")
 
